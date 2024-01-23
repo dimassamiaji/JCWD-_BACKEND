@@ -1,4 +1,3 @@
-import { log } from "console";
 import express, { Request, Response, Application } from "express";
 
 const PORT = 8001;
