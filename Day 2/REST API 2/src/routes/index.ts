@@ -1,4 +1,4 @@
-import { route as userRoutes } from "./user";
+import { route as userRoutes } from "./users";
 import { route as productRoutes } from "./product";
 
 export const routes = {
