@@ -1,7 +1,10 @@
+/** @format */
+
 import express, { Request, Response, Application } from "express";
 
-const PORT = 8001;
+const PORT = 8000;
 const app: Application = express();
+
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
@@ -11,17 +14,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/api", (req: Request, res: Response) => {
-  const { query } = req;
+  const { query } = req; // query params
   res.status(200).send({
-    message: "ini api",
+    messsage: " ini api",
     query,
   });
 });
 
 app.get("/api/:id/:id2", (req: Request, res: Response) => {
-  const { params, query } = req;
+  const { params, query } = req; //route params
   res.status(200).send({
-    message: "ini api",
+    messsage: " ini api",
     params,
     query,
   });
@@ -47,10 +50,10 @@ const users: TUsers = [
     name: "naruto",
   },
 ];
-
 app.get("/users", (req: Request, res: Response) => {
   res.send({
     message: "fetch user data",
+    users,
   });
 });
 
@@ -68,9 +71,8 @@ app.patch("/users/:id", (req: Request, res: Response) => {
 });
 
 app.post("/api", (req: Request, res: Response) => {
-  const { body } = req;
+  const { body } = req; // req.body
   console.log(body);
-
   res.status(201).send({
     message: "ini post api",
     body,
