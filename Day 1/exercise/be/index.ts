@@ -2,12 +2,12 @@
 
 import express, { Request, Response, Application } from "express";
 import { product, products } from "./data";
-import cors from "cors";
+// import cors from "cors";
 const app: Application = express();
 const PORT = 8000;
 
 app.use(express.json());
-app.use(cors()); //
+// app.use(cors()); //
 
 app.get("/", (req: Request, res: Response) => {
   res.send("welcome to exercise API");
