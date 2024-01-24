@@ -15,12 +15,12 @@ app.get("/", (req: Request, res: Response) => {
 
 //Create
 app.post("/expenses", (req: Request, res: Response) => {
-  const { expenseName, nominal, description } = req.body; //data dari req.body
+  const { expenseName, nominal, category } = req.body; //data dari req.body
   const newExpense: expense = {
     id: expenses[expenses.length - 1].id + 1,
     expenseName,
     nominal,
-    description,
+    category,
   }; //template new expense sesuai dengan data di array
   expenses.push(newExpense); //push new data ke dalam array
 
@@ -52,7 +52,7 @@ app.patch("/expenses/:id", (req: Request, res: Response) => {
     id: expenses[index].id, //id tidak dapat diubah dari req.body
     expenseName: body.expenseName || expenses[index].expenseName,
     nominal: body.nominal || expenses[index].nominal,
-    description: body.description || expenses[index].description,
+    category: body.category || expenses[index].category,
   };
 
   expenses[index] = editExpense; //update value ke dalam data produk
@@ -76,6 +76,50 @@ app.delete("/expenses/:id", (req: Request, res: Response) => {
   res.send({
     message: "data berhasil dihapus",
   });
+});
+
+// // Get total expense by date range
+// app.get("/expenses/totalByDateRange", (req:Request, res:Response) => {
+//   const { startDate, endDate } = req.query;
+
+//   if (!startDate || !endDate) {
+//     return res
+//       .status(400)
+//       .send("Please provide both startDate and endDate parameters");
+//   }
+
+//   const expensesInDateRange = expenses.filter((exp) => {
+//     const expenseDate = new Date(exp.date);
+//     return (
+//       expenseDate >= new Date(startDate) && expenseDate <= new Date(endDate)
+//     );
+//   });
+
+//   const totalExpense = expensesInDateRange.reduce(
+//     (total, exp) => total + exp.nominal,
+//     0
+//   );
+
+//   res.send(`Total Expense in Date Range: ${totalExpense}`);
+// });
+
+// Get total expense by category
+app.get("/expenses/totalByCategory", (req: Request, res: Response) => {
+  const { category } = req.query;
+
+  if (!category) {
+    return res.status(400).send("Please provide the category parameter");
+  }
+
+  const expensesInCategory = expenses.filter(
+    (exp) => exp.category === category
+  );
+  const totalExpense = expensesInCategory.reduce(
+    (total, exp) => total + exp.nominal,
+    0
+  );
+
+  res.send(`Total Expense in Category '${category}': ${totalExpense}`);
 });
 
 app.listen(PORT, () => {
