@@ -5,11 +5,20 @@ import { writeLog } from "./middlewares/write-log";
 const PORT = 8001;
 const app: Application = express();
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("hello");
+  next();
+});
+
 app.use(writeLog);
 
 app.get("/", (req: Request, res: Response) => {
+  //   throw Error("ini error");
   res.send("welcome to api");
 });
+
+// req,res , (next) => request handler
+// error ,req,res,(next) => error handler
 
 //user routes
 app.use("/users", routes.userRoutes);
