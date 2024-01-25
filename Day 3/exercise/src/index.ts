@@ -21,6 +21,7 @@ app.post("/expenses", (req: Request, res: Response) => {
     expenseName,
     nominal,
     category,
+    date: "",
   }; //template new expense sesuai dengan data di array
   expenses.push(newExpense); //push new data ke dalam array
 
@@ -42,7 +43,7 @@ app.get("/expenses", (req: Request, res: Response) => {
 app.patch("/expenses/:id", (req: Request, res: Response) => {
   const { id } = req.params; // get id dari params
   const { body } = req; // ambil data dari req.body
-  const index = expenses.findIndex((produk) => produk.id == Number(id)); //cari index produk sesuai dengan id
+  const index = expenses.findIndex((expense) => expense.id == Number(id)); //cari index produk sesuai dengan id
   if (index == -1)
     return res.status(500).send({
       message: "id tidak ditemukan",
@@ -53,6 +54,7 @@ app.patch("/expenses/:id", (req: Request, res: Response) => {
     expenseName: body.expenseName || expenses[index].expenseName,
     nominal: body.nominal || expenses[index].nominal,
     category: body.category || expenses[index].category,
+    date: "",
   };
 
   expenses[index] = editExpense; //update value ke dalam data produk
@@ -79,29 +81,30 @@ app.delete("/expenses/:id", (req: Request, res: Response) => {
 });
 
 // // Get total expense by date range
-// app.get("/expenses/totalByDateRange", (req:Request, res:Response) => {
-//   const { startDate, endDate } = req.query;
+app.get("/expenses/totalByDateRange", (req: Request, res: Response) => {
+  const { startDate, endDate } = req.query;
 
-//   if (!startDate || !endDate) {
-//     return res
-//       .status(400)
-//       .send("Please provide both startDate and endDate parameters");
-//   }
+  if (!startDate || !endDate) {
+    return res
+      .status(400)
+      .send("Please provide both startDate and endDate parameters");
+  }
 
-//   const expensesInDateRange = expenses.filter((exp) => {
-//     const expenseDate = new Date(exp.date);
-//     return (
-//       expenseDate >= new Date(startDate) && expenseDate <= new Date(endDate)
-//     );
-//   });
+  const expensesInDateRange = expenses.filter((exp) => {
+    const expenseDate = new Date(exp.date);
+    return (
+      expenseDate >= new Date(String(startDate)) &&
+      expenseDate <= new Date(String(endDate))
+    );
+  });
 
-//   const totalExpense = expensesInDateRange.reduce(
-//     (total, exp) => total + exp.nominal,
-//     0
-//   );
+  const totalExpense = expensesInDateRange.reduce(
+    (total, exp) => total + exp.nominal,
+    0
+  );
 
-//   res.send(`Total Expense in Date Range: ${totalExpense}`);
-// });
+  res.send(`Total Expense in Date Range: ${totalExpense}`);
+});
 
 // Get total expense by category
 app.get("/expenses/totalByCategory", (req: Request, res: Response) => {
