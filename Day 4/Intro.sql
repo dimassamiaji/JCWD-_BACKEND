@@ -25,7 +25,7 @@ update students set address = 'Bekasi' where name = 'Akmil';
 update students set address = 'Tangerang' where name = 'Akmal';
 update students set name  = 'Ikmal' where name = 'ikmal';
 
-select * from students where address = 'Jakarta' and marks > 50;
+select * from students where address = 'Jakarta' 	 marks > 50;
 select * from students where address = 'Jakarta' or marks > 50;
 select * from students where address = 'Jakarta' or address = 'Tangerang';
 
@@ -42,6 +42,7 @@ select * from students where name like 'ik%'; -- nama diawali dengan ik
 select * from students order by name desc; -- sort student by name descending
 select * from students order by marks; -- sort student by marks ascending
 
+use db_purwadhika;
 select count(name), alamat from students where name like '%i%' group by alamat;
 select count(name), alamat from students group by alamat;
 
@@ -69,8 +70,6 @@ insert into Persons(LastName,FirstName,Age) values("Uchiha", "Gibski", 37);
 select * from Persons;
 
 drop table persons;
-
-
 
 select * from students; -- select all columns in table students
 select name from students; -- select column name in table students
