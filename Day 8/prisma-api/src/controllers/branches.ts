@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "..";
-import { error } from "console";
+
 
 export const branchController = {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -13,7 +13,7 @@ export const branchController = {
         message: "data branch berhasil dibuat",
       });
     } catch (err) {
-      throw Error(err.message);
+      if (err instanceof Error) throw Error(err.message);
     }
   },
 
@@ -25,7 +25,7 @@ export const branchController = {
         result: branch,
       });
     } catch (err) {
-      throw Error(err.message);
+      if (err instanceof Error) throw Error(err.message);
     }
   },
 
@@ -42,7 +42,7 @@ export const branchController = {
         message: "data berhasil diupdate",
       });
     } catch (err) {
-      throw Error(err.message);
+      if (err instanceof Error) throw Error(err.message);
     }
   },
 
@@ -58,7 +58,7 @@ export const branchController = {
         Message: "data berhasil dihapus",
       });
     } catch (err) {
-      throw Error(err.message);
+      if (err instanceof Error) throw Error(err.message);
     }
   },
 };

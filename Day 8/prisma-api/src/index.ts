@@ -18,5 +18,5 @@ app.use("/branches", routes.branchRoutes);
 
 const PORT = 8000;
 app.listen(PORT, () => {
-  console.log("api is running on port, PORT");
+  console.log("api is running on port", PORT);
 });
