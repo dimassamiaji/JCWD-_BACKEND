@@ -29,6 +29,23 @@ export const branchController = {
     }
   },
 
+  async getById (req : Request, res : Response, next : NextFunction) {
+    try {
+      const branch = await prisma.branch.findUnique({
+        where : {
+          id : Number(req.params.id),
+        }
+      })
+      res.send({
+        success : true,
+        result : branch
+      })
+    } catch (err) {
+      if (err instanceof Error) throw Error(err?.message)
+    }
+  }
+    
+
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       await prisma.branch.update({
@@ -62,3 +79,4 @@ export const branchController = {
     }
   },
 };
+
