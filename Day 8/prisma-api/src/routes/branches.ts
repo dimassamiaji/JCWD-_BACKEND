@@ -7,7 +7,7 @@ route.get("/name-location", branchController.selectNameLocation);
 route.get("/filter", branchController.filterBranch);
 route.get("/pagination", branchController.paging);
 route.get("/branch-class", branchController.branchClass);
-
+route.post("/branch-class", branchController.addClassAndBranch);
 
 route.get("/:id", branchController.getById);
 route.post("/", branchController.create);

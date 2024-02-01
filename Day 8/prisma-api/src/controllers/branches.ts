@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "..";
+import { Prisma } from "@prisma/client";
 
 export const branchController = {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -52,9 +53,20 @@ export const branchController = {
   async branchClass(req: Request, res: Response, next: NextFunction) {
     try {
       const branch = await prisma.branch.findMany({
-        include: {
-          Class: true,
+        select: {
+          name: true,
+          location: true,
+          Class: {
+            select: {
+              name: true,
+              startAt: true,
+              endAt: true,
+            },
+          },
         },
+        // include: {
+        //   Class: true,
+        // },
       });
       res.send({
         success: true,
@@ -67,23 +79,28 @@ export const branchController = {
 
   async addClassAndBranch(req: Request, res: Response, next: NextFunction) {
     try {
-      const trans = await prisma.$transaction(async (prisma) => {
-        const newBranch = {
+      await prisma.$transaction(async (prisma) => {
+        const newBranch: Prisma.BranchCreateInput = {
           name: req.body.branch_name,
           location: req.body.location,
         };
         const transBranch = await prisma.branch.create({
-          data: req.body,
+          data: newBranch,
         });
-        const newClass = {
+        const newClass: Prisma.ClassCreateInput = {
           name: req.body.class_name,
-          startAt: req.body.startAt,
-          endAt: req.body.startOut,
-          branchId: transBranch.id,
+          startAt: new Date(req.body.startAt),
+          endAt: new Date(req.body.endAt),
+          Branch: { connect: transBranch }, 
         };
+        await prisma.class.create({
+          data: newClass,
+        });
       });
+
+      branchController.branchClass(req, res, next);
     } catch (err) {
-      if (err instanceof Error) throw Error(err.message);
+      next(err);
     }
   },
 
