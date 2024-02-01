@@ -3,8 +3,11 @@ import { branchController } from "../controllers/branches";
 
 export const route: Router = express.Router();
 route.get("/", branchController.read);
-route.get("/Name-Location", branchController.selectNameLocation);
+route.get("/name-location", branchController.selectNameLocation);
 route.get("/filter", branchController.filterBranch);
+route.get("/pagination", branchController.paging);
+route.get("/branch-class", branchController.branchClass);
+
 
 route.get("/:id", branchController.getById);
 route.post("/", branchController.create);

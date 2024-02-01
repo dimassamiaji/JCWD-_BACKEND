@@ -35,7 +35,63 @@ export const branchController = {
           name: {
             contains: String(req.query.name),
           },
+          location: {
+            contains: String(req.query.location),
+          },
         },
+      });
+      res.send({
+        success: true,
+        result: branch,
+      });
+    } catch (err) {
+      if (err instanceof Error) throw Error(err.message);
+    }
+  },
+
+  async branchClass(req: Request, res: Response, next: NextFunction) {
+    try {
+      const branch = await prisma.branch.findMany({
+        include: {
+          Class: true,
+        },
+      });
+      res.send({
+        success: true,
+        result: branch,
+      });
+    } catch (err) {
+      if (err instanceof Error) throw Error(err.message);
+    }
+  },
+
+  async addClassAndBranch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const trans = await prisma.$transaction(async (prisma) => {
+        const newBranch = {
+          name: req.body.branch_name,
+          location: req.body.location,
+        };
+        const transBranch = await prisma.branch.create({
+          data: req.body,
+        });
+        const newClass = {
+          name: req.body.class_name,
+          startAt: req.body.startAt,
+          endAt: req.body.startOut,
+          branchId: transBranch.id,
+        };
+      });
+    } catch (err) {
+      if (err instanceof Error) throw Error(err.message);
+    }
+  },
+
+  async paging(req: Request, res: Response, next: NextFunction) {
+    try {
+      const branch = await prisma.branch.findMany({
+        skip: Number(req.query.page),
+        take: 1,
       });
       res.send({
         success: true,
