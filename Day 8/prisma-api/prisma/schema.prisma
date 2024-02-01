@@ -18,8 +18,8 @@ model Student {
   password String
   isGraduated Boolean
   program String
-  updatedAt DateTime
-  createdAt DateTime
+  updatedAt DateTime @default(now())
+  createdAt DateTime @default(now())
   MapStudentClass MapStudentClass[]
 }
 
@@ -29,8 +29,8 @@ model Lecturer {
   fullname String
   password String
   isActive Boolean
-  updateAt DateTime
-  createdAt DateTime
+  updateAt DateTime @default(now())
+  createdAt DateTime @default(now())
   MapLecturerClass MapLecturerClass[] 
 }
 
@@ -38,18 +38,18 @@ model Branch {
   id Int @id @default(autoincrement())
   name String
   location String
-  updateAt DateTime
-  createdAt DateTime
+  updateAt DateTime @default(now())
+  createdAt DateTime @default(now())
   Class Class[]
 }
 
 model Class {
   id Int @id @default(autoincrement())
   name String
-  startAt DateTime
-  endAt DateTime
-  updateAt DateTime
-  createdAt DateTime
+  startAt DateTime @default(now())
+  endAt DateTime @default(now())
+  updateAt DateTime @default(now())
+  createdAt DateTime @default(now())
   branchId Int
   Branch Branch @relation(fields: [branchId], references : [id], onDelete: NoAction, onUpdate: NoAction)
   MapStudentClass MapStudentClass[]

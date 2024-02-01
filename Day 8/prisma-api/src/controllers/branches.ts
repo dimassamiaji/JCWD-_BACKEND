@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "..";
 
-
 export const branchController = {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
@@ -29,22 +28,56 @@ export const branchController = {
     }
   },
 
-  async getById (req : Request, res : Response, next : NextFunction) {
+  async filterBranch(req: Request, res: Response, next: NextFunction) {
+    try {
+      const branch = await prisma.branch.findMany({
+        where: {
+          name: {
+            contains: String(req.query.name),
+          },
+        },
+      });
+      res.send({
+        success: true,
+        result: branch,
+      });
+    } catch (err) {
+      if (err instanceof Error) throw Error(err.message);
+    }
+  },
+
+  async selectNameLocation(req: Request, res: Response, next: NextFunction) {
+    try {
+      const branch = await prisma.branch.findMany({
+        select: {
+          name: true,
+          location: true,
+        },
+      });
+      res.send({
+        success: true,
+        result: branch,
+      });
+    } catch (err) {
+      if (err instanceof Error) throw Error(err.message);
+    }
+  },
+
+  async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const branch = await prisma.branch.findUnique({
-        where : {
-          id : Number(req.params.id),
-        }
-      })
+        where: {
+          id: Number(req.params.id),
+        },
+      });
       res.send({
-        success : true,
-        result : branch
-      })
+        success: true,
+        result: branch,
+      });
     } catch (err) {
-      if (err instanceof Error) throw Error(err?.message)
+      if (err instanceof Error) throw Error(err.message);
     }
-  }
-    
+  },
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
@@ -79,4 +112,3 @@ export const branchController = {
     }
   },
 };
-
