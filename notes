@@ -2,11 +2,8 @@ how to install API and SQL with Prisma
 
 npm init --y
 npm i express @types/express mysql2 prisma
+npm i @prisma/client@latest
 npx prisma init
 
-
-npm i @prisma/client@latest
-
+migrate to SQL
 npx prisma migrate dev
-
-

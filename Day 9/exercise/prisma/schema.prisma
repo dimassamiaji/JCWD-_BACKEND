@@ -10,17 +10,26 @@ datasource db {
   url      = "mysql://root:@Ds20022013.@localhost:3306/learn_blog"
 }
 
+enum Gender {
+  male 
+  female
+}
 
-Model Users {
+model User {
   id Int @id @default(autoincrement())
   username String
   email String
   password String
+  first_name String
+  last_name String
+  gender Gender
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  articles Article []
+  comments Comment []
 }
 
-}
-
-Model Post {
+model Article {
   id Int @id @default(autoincrement())
   authorId Int
   title String
@@ -29,21 +38,34 @@ Model Post {
   updatedAt DateTime @default(now())
   publishedAt DateTime @default(now())
   content String
+  user User @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  articles Article[]
 }
 
-Model Post_Comment {
+model Comment {
   id Int @id @default(autoincrement())
-  postId Int
+  articeId Int
+  userId Int
   title String
-  published Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  publishedAt DateTime @default(now())
-  content text
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  article Article @relation(fields: [articleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
 }
 
-Table category {
+model Category {
   id Int @id @default(autoincrement())
-  title String
-  category_name String
+  category String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  article_category Article_Category[]
+}
+
+model Article_Category {
+  articleId Int
+  categoryId Int
+  article Article @relation(fields: [articleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  @@id([articleId,categoryId])
 }
