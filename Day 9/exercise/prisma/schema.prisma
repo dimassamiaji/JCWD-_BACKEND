@@ -18,11 +18,6 @@ Model Users {
   password String
 }
 
-Model Users_Detail {
-  id Int @id @default(autoincrement())
-  first_name String
-  last_name String
-  phone_number String
 }
 
 Model Post {
