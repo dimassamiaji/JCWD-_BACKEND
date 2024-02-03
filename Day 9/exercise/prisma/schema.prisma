@@ -59,7 +59,7 @@ model Category {
   category String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  article_category Article_Category[]
+  article_categories Article_Category[]
 }
 
 model Article_Category {
