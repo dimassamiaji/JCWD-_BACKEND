@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 
-const userController = {
+export const userController = {
   register(req: Request, res: Response, next: NextFunction) {
     res.send("test");
   },

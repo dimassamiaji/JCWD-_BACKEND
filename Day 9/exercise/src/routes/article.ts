@@ -1,6 +1,8 @@
-import express, { Router } from 'express';
+import express, { Router } from "express";
+import { articleController } from "../controllers/article";
+
 export const route: Router = express.Router();
-route.get('/');
-route.post('/');
-route.patch('/:id');
-route.delete('/:id');
+route.get("/", articleController.read);
+route.post("/", articleController.create);
+route.patch("/:id", articleController.update);
+route.delete("/:id", articleController.delete);

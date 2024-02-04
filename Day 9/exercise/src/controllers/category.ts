@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 
-const categoryController = {
+export const categoryController = {
   create(req: Request, res: Response, next: NextFunction) {
     res.send("test");
   },

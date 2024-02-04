@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 
-const articleController = {
+export const articleController = {
   create(req: Request, res: Response, next: NextFunction) {
     res.send("test");
   },
