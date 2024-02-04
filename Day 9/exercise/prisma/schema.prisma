@@ -43,7 +43,7 @@ model Article {
 
 model Comment {
   id Int @id @default(autoincrement())
-  articeId Int
+  articleId Int
   userId Int
   comment String
   createdAt DateTime @default(now())
