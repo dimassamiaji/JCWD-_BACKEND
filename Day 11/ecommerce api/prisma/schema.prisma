@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:@Ds20022013.@localhost:3306/db_ecommerce"
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum Role {
+  admin
+  user
+}
+
+enum Status_Payment {
+  waiting for payment
+  waiting for admin approval
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password Int
+  first_name String
+  last_name String
+  gender Gender
+  birth_day Date
+  role Role @default(User)
+  bank_account Int
+}
+
+model Product {
+  userId Int @id @default(autoincrement())
+  productId Int @id @default(autoincrement())
+  product_name String
+  product_img String
+  price String
+  category_name String
+} 
+
+model Product_Category {
+ categoryId Int @id @default(autoincrement())
+ productId Int
+}
+
+model Stock {
+  productId Int @id @default(autoincrement())
+  qty Int
+}
+
+model Transaction {
+  userId Int @id @default(autoincrement())
+  orderId Int @id @default(autoincrement())
+  userId Int
+  no_invoice Int
+  order_date DateTime @default(now())
+  status_payment Status_Payment
+  total_payment Int
+}
+model Transaction_Detail {
+  order_detail_id Int @id @default(autoincrement())
+  productId integer
+  orderId integer
+  price integer
+  qty integer
+}
+
+model Cart {
+  userId Int @id @default(autoincrement())
+  productId Int
+  qty Int
+}

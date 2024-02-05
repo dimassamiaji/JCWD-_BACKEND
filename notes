@@ -7,3 +7,12 @@ npx prisma init
 
 migrate to SQL
 npx prisma migrate dev
+
+
+user
+produk 
+category 
+stock
+transaction
+transaction detail
+cart
