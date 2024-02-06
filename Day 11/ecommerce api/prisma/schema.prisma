@@ -20,11 +20,6 @@ enum Role {
   user
 }
 
-enum Status_Payment {
-  waiting for payment
-  waiting for admin approval
-}
-
 model User {
   id Int @id @default(autoincrement())
   email String @unique
@@ -32,49 +27,67 @@ model User {
   first_name String
   last_name String
   gender Gender
-  birth_day Date
-  role Role @default(User)
+  role Role
   bank_account Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  products Product[]
+  transactions Transaction[]
+  carts Cart[]
+
 }
 
 model Product {
-  userId Int @id @default(autoincrement())
-  productId Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+  userId Int
   product_name String
   product_img String
-  price String
+  price Decimal
   category_name String
-} 
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product_categories Product_Category[]
+  stocks Stock[]
+  transaction_Details Transaction_Detail[]
+  carts Cart[]
+}
 
 model Product_Category {
- categoryId Int @id @default(autoincrement())
- productId Int
+  categoryId Int @id @default(autoincrement())
+  productId Int
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Stock {
   productId Int @id @default(autoincrement())
   qty Int
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Transaction {
-  userId Int @id @default(autoincrement())
-  orderId Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   userId Int
   no_invoice Int
   order_date DateTime @default(now())
-  status_payment Status_Payment
   total_payment Int
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transaction_Details Transaction_Detail[]
 }
+
 model Transaction_Detail {
-  order_detail_id Int @id @default(autoincrement())
-  productId integer
-  orderId integer
-  price integer
-  qty integer
+  transaction_detail_id Int @id @default(autoincrement())
+  productId Int
+  transactionId Int
+  price Decimal
+  qty Decimal
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Cart {
-  userId Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+  userId Int
   productId Int
-  qty Int
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
+
